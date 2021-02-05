@@ -195,33 +195,8 @@ public class Protoc
 		File binDir = new File(tmpDir, "bin");
 		binDir.mkdirs();
 		binDir.deleteOnExit();
-		
-		File exeFile = null;
-		if (protocVersion.mArtifact == null) { // look for embedded protoc and on web (maven central)
-			// look for embedded version
-			String srcFilePath = "bin/" + protocVersion.mVersion + "/" + getProtocExeName(protocVersion);
-			try {
-				File protocTemp = new File(binDir, "protoc.exe");
-				populateFile(srcFilePath, protocTemp);
-				log("embedded: " + srcFilePath);
-				protocTemp.setExecutable(true);
-				protocTemp.deleteOnExit();
-				return protocTemp;
-			}
-			catch (FileNotFoundException e) {
-				//log(e);
-			}
-			
-			// look in cache and maven central
-			exeFile = findDownloadProtoc(protocVersion);
-		}
-		else { // download by artifact id from maven central
-			String downloadPath = protocVersion.mGroup.replace(".", "/") + "/" + protocVersion.mArtifact + "/";
-			exeFile = downloadProtoc(protocVersion, downloadPath, true);
-		}
-		
-		if (exeFile == null) throw new FileNotFoundException("Unsupported platform: " + getProtocExeName(protocVersion));
-		
+
+		File exeFile = new File("/Users/sho/protoc-3.11.4-osx-aarch_64.exe");
 		File protocTemp = new File(binDir, "protoc.exe");
 		populateFile(exeFile.getAbsolutePath(), protocTemp);
 		protocTemp.setExecutable(true);
